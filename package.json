@@ -1,0 +1,32 @@
+{
+  "name": "svelte-better-store",
+  "version": "1.0.0",
+  "description": "A state management library that implemented for Svelte that is very similar to @svelte/store",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "null"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ragokan/svelte-better-store.git"
+  },
+  "keywords": [
+    "svelte",
+    "state",
+    "management"
+  ],
+  "author": "ragokan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ragokan/svelte-better-store/issues"
+  },
+  "homepage": "https://github.com/ragokan/svelte-better-store#readme",
+  "devDependencies": {
+    "tslib": "^2.3.1",
+    "typedoc": "^0.22.10",
+    "typescript": "^4.5.3"
+  },
+  "dependencies": {
+    "svelte": "^3.44.2"
+  }
+}
