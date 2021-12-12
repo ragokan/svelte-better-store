@@ -27,7 +27,7 @@
 
 ### betterStore
 
-#### Best when you have an Object, else [check betterWritable]($betterWritable)
+#### Best when you have an Object, else [check betterWritable](#betterWritable)
 
 #### It has a great **update** method which replaces {...store, age: 25} with {age: 25} only!
 
