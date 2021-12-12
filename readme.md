@@ -143,7 +143,7 @@ console.log(filteredTodos.get());
 filteredTodos.subscribe(console.log);
 ```
 
-#### Another example with **filter** and **combine**
+#### Another example with **combine**
 
 ```ts
 enum NumberFilter {
@@ -154,13 +154,9 @@ enum NumberFilter {
 export const numberStore = betterWritable([0, 1, 2]);
 export const filterStore = betterWritable(NumberFilter.allNumbers);
 
-export const doubledNumbers = numberStore.filter((store) => store.map((num) => num + 2));
-
 export const filteredNumbersStore = betterCombinedStore((sub) => {
   const numbers = sub(numberStore);
   const filter = sub(filterStore);
-
-  // Also you can do sub(doubledNumbers)
 
   switch (filter) {
     case NumberFilter.allNumbers:

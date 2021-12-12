@@ -1,10 +1,10 @@
 import type { Subscriber } from "svelte/store";
-import type { BetterBase, BetterReadable } from "./readable";
+import type { BetterBase } from "./readable";
 import type { SubscribeStore } from "./store";
 
 export interface BetterCombined<CombinedStore> extends BetterBase<CombinedStore> {}
 
-export type CombinedSubscribe = <State>(readable: BetterReadable<State>) => State;
+export type CombinedSubscribe = <State>(readable: BetterBase<State>) => State;
 
 export type CombinedCallback<CombinedStore> = (subscribe: CombinedSubscribe) => CombinedStore;
 
