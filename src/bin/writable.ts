@@ -1,9 +1,11 @@
 import { noop } from "svelte/internal";
-import type { Subscriber, Unsubscriber, Updater, Writable } from "svelte/store";
+import type { Subscriber, Unsubscriber, Updater } from "svelte/store";
+import { BetterBase } from "..";
 import type { Setter, SubscribeStore } from "./store";
 
-export interface BetterWritable<Value> extends Writable<Value> {
-  get: () => Value;
+export interface BetterWritable<Value> extends BetterBase<Value> {
+  set(value: Value): void;
+  update(update: Updater<Value>): void;
 }
 
 export const betterWritable = <Value>(
