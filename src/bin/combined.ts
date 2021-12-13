@@ -8,7 +8,7 @@ export type CombinedSubscribe = <State>(readable: BetterBase<State>) => State;
 
 export type CombinedCallback<CombinedStore> = (subscribe: CombinedSubscribe) => CombinedStore;
 
-export const betterCombinedStore = <CombinedStore>(
+export const betterCombined = <CombinedStore>(
   callback: CombinedCallback<CombinedStore>
 ): BetterCombined<CombinedStore> => {
   let _hasSubscribers = false;

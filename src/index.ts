@@ -2,7 +2,7 @@ export {
   BetterCombined,
   CombinedCallback,
   CombinedSubscribe,
-  betterCombinedStore,
+  betterCombined,
 } from "./bin/combined";
 export { BetterFiltered, betterFiltered } from "./bin/filtered";
 export { BetterBase, BetterReadable, GetStore, betterReadable } from "./bin/readable";

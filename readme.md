@@ -159,7 +159,7 @@ enum NumberFilter {
 export const numberStore = betterWritable([0, 1, 2]);
 export const filterStore = betterWritable(NumberFilter.allNumbers);
 
-export const filteredNumbersStore = betterCombinedStore((sub) => {
+export const filteredNumbersStore = betterCombined((sub) => {
   const numbers = sub(numberStore);
   const filter = sub(filterStore);
 

@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "resolveJsonModule": true,
+    "lib": ["ES2017", "DOM"],
+    "target": "ES2017",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
+    "useDefineForClassFields": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "declaration": true,
     "outDir": "./dist",
@@ -26,7 +26,8 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "downlevelIteration": true
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.ts"]
