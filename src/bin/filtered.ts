@@ -1,3 +1,4 @@
+import { GetStore } from "..";
 import type { BetterReadable } from "./readable";
 import type { SubscribeStore } from "./store";
 
@@ -5,12 +6,13 @@ export interface BetterFiltered<Slice> extends BetterReadable<Slice> {}
 
 export const betterFiltered = <ParentState, Slice>(
   parentSubscribe: SubscribeStore<ParentState>,
+  parentGet: GetStore<ParentState>,
   slice: (store: ParentState) => Slice
 ): BetterFiltered<Slice> => {
   let currentSlice: Slice | null = null;
 
   return {
-    get: () => currentSlice,
+    get: () => slice(parentGet()),
     subscribe: (subscriber) =>
       parentSubscribe((store) => {
         let newSlice = slice(store);

@@ -2,6 +2,9 @@
 
 ## A state management library that implemented for Svelte that is very similar to **@svelte/store**
 
+[![npm](https://img.shields.io/npm/v/svelte-better-store?color=F53B02)](https://www.npmjs.com/package/svelte-better-store)
+[![GitHub Repo stars](https://img.shields.io/github/stars/ragokan/svelte-better-store?label=github%20stars)](https://github.com/ragokan/svelte-better-store)
+
 ### Why svelte-better-store?
 
 - It is very similar to **@svelte/store**
@@ -57,6 +60,8 @@ const personAge = personStore.filter((store) => store.age);
 person.update((p) => ({ age: p.age + 1 })); // { name: "better", age: 26 }
 
 person.update({ age: 27 }); // { name: "better", age: 27 }
+
+person.update("age", (age) => age + 1); // { name: "better", age: 28 }
 
 person.update({ age: undefined }); // { name: "better" } - but you better use set to remove
 ```

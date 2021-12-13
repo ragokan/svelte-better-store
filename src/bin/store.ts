@@ -7,9 +7,11 @@ import type { BetterReadable } from "./readable";
 const noop = () => {};
 
 export type SetStore<Store> = (newStore: Store) => void;
-export type UpdateStore<Store> = (
-  update: Partial<Store> | ((state: Store) => Partial<Store>)
-) => void;
+export type FullUpdate<Store> = Partial<Store> | ((state: Store) => Partial<Store>);
+export interface UpdateStore<Store> {
+  <Setter extends keyof Store>(key: Setter, update: (value: Store[Setter]) => Store[Setter]): void;
+  (update: FullUpdate<Store>): void;
+}
 export type Setter<Store> = (set: SetStore<Store>) => Unsubscriber | void;
 export type SubscribeStore<Store> = (sub: Subscriber<Store>) => Unsubscriber;
 export type FilterStore<Store> = <Slice>(slice: (store: Store) => Slice) => BetterFiltered<Slice>;
@@ -47,8 +49,15 @@ export const betterStore = <Store>(
     }
   };
 
-  const update: UpdateStore<Store> = (update) =>
-    set(Object.assign({}, store, typeof update === "function" ? update(store) : update));
+  const update: UpdateStore<Store> = <Setter extends keyof Store = any>(...args: any[]) => {
+    if (args.length == 2) {
+      const param1 = args[0] as Setter;
+      const param2 = args[1] as (value: Store[Setter]) => Store[Setter];
+      return set(Object.assign({}, store, { [param1]: param2(store[param1]) }));
+    }
+    const param1 = args[0] as FullUpdate<Store>;
+    set(Object.assign({}, store, typeof param1 === "function" ? param1(store) : param1));
+  };
 
   const subscribe: SubscribeStore<Store> = (sub) => {
     _subscribers.add(sub);
@@ -67,7 +76,7 @@ export const betterStore = <Store>(
 
   const filter: FilterStore<Store> = <Slice>(
     slice: (store: Store) => Slice
-  ): BetterFiltered<Slice> => betterFiltered(subscribe, slice);
+  ): BetterFiltered<Slice> => betterFiltered(subscribe, get, slice);
 
   return { get, set, update, subscribe, filter };
 };
