@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
     "sourceMap": true,
@@ -24,7 +26,6 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "noFallthroughCasesInSwitch": true
   },
   "exclude": ["node_modules"],

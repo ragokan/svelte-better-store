@@ -1,11 +1,12 @@
 import { noop } from "svelte/internal";
 import type { Subscriber, Unsubscriber, Updater } from "svelte/store";
-import { BetterBase } from "..";
+import { BetterBase, betterFiltered, BetterFiltered, FilterStore } from "..";
 import type { Setter, SubscribeStore } from "./store";
 
 export interface BetterWritable<Value> extends BetterBase<Value> {
   set(value: Value): void;
   update(update: Updater<Value>): void;
+  filter: FilterStore<Value>;
 }
 
 export const betterWritable = <Value>(
@@ -52,5 +53,9 @@ export const betterWritable = <Value>(
     };
   };
 
-  return { get, set, update, subscribe };
+  const filter: FilterStore<Value> = <Slice>(
+    slice: (store: Value) => Slice
+  ): BetterFiltered<Slice> => betterFiltered(subscribe, get, slice);
+
+  return { get, set, update, subscribe, filter };
 };
