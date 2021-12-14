@@ -11,23 +11,22 @@ export type CombinedCallback<CombinedStore> = (subscribe: CombinedSubscribe) => 
 export const betterCombined = <CombinedStore>(
   callback: CombinedCallback<CombinedStore>
 ): BetterCombined<CombinedStore> => {
-  let _hasSubscribers = false;
   let _cancels: Array<Function> = [];
 
-  let get = (): CombinedStore => callback(_combinedSubscribe);
+  let get = (): CombinedStore => callback((readable) => readable.get());
 
   const _subscribers: Set<Subscriber<CombinedStore>> = new Set();
 
   const subscribe: SubscribeStore<CombinedStore> = (sub) => {
-    _subscribers.add(sub);
-    sub(get());
-    if (!_hasSubscribers) {
-      _hasSubscribers = true;
+    if (_cancels.length < 1) {
+      sub(callback(_combinedSubscribe));
+    } else {
+      sub(get());
     }
+    _subscribers.add(sub);
     return () => {
       _subscribers.delete(sub);
       if (_subscribers.size === 0) {
-        _hasSubscribers = false;
         _cancels.forEach((cancel) => cancel());
         _cancels = [];
       }
@@ -44,15 +43,13 @@ export const betterCombined = <CombinedStore>(
   };
 
   const _combinedSubscribe: CombinedSubscribe = (readable) => {
-    if (!_hasSubscribers) {
-      _cancels.push(
-        readable.subscribe(() => {
-          if (_hasSubscribers) {
-            _notify();
-          }
-        })
-      );
-    }
+    _cancels.push(
+      readable.subscribe(() => {
+        if (_subscribers.size > 0) {
+          _notify();
+        }
+      })
+    );
     return readable.get();
   };
 
