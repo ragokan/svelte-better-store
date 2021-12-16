@@ -16,3 +16,4 @@ export {
   UpdateStore,
   betterStore,
 } from "./bin/store";
+export { produce } from "./bin/produce";

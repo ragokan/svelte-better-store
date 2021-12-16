@@ -175,3 +175,24 @@ export const filteredNumbersStore = betterCombined((sub) => {
   }
 });
 ```
+
+#### Produce - Mutate **store**
+
+If you are using **betterStore** or you have a list in **betterWritable**, you can use **produce** to mutate them. Usage is fairly simple;
+
+```ts
+const appStore = betterStore({ count: 0, items: [] });
+
+appStore.update(
+  produce((store) => {
+    store.count++; // it is valid
+    store.items.add(5); // it is also valid
+  })
+);
+
+// or you can focus on a sub item directly (it also must be object or array)
+appStore.update(
+  "items",
+  produce((items) => items.add(5))
+);
+```
