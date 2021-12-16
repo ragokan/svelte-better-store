@@ -1,10 +1,8 @@
+import { noop } from "svelte/internal";
 import type { Subscriber, Unsubscriber } from "svelte/store";
 import type { BetterFiltered } from "./filtered";
 import { betterFiltered } from "./filtered";
 import type { BetterReadable } from "./readable";
-
-// From Svelte but I didn't want to import it, because of Svelte REPL error: 'default' is not exported by svelte...
-const noop = () => {};
 
 export type SetStore<Store> = (newStore: Store) => void;
 export type FullUpdate<Store> = Partial<Store> | ((state: Store) => Partial<Store>);
