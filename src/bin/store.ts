@@ -1,7 +1,7 @@
 import { noop } from "svelte/internal";
 import type { Subscriber, Unsubscriber, Writable } from "svelte/store";
 
-export interface $Base<T> extends Writable<T> {
+export interface BetterBase<T> extends Writable<T> {
   get: GetStore<T>;
   set: SetStore<T>;
 }
@@ -16,12 +16,15 @@ export interface UpdateStore<Store> {
 }
 export type SubscribeStore<Store> = (sub: Subscriber<Store>) => Unsubscriber;
 
-export interface $Store<Store> extends $Base<Store> {
+export interface BetterStore<Store> extends BetterBase<Store> {
   update: UpdateStore<Store>;
   subscribe: SubscribeStore<Store>;
 }
 
-export const $store = <Store>(store: Store, setter: Setter<Store> = noop): $Store<Store> => {
+export const betterStore = <Store>(
+  store: Store,
+  setter: Setter<Store> = noop
+): BetterStore<Store> => {
   let _stop: Unsubscriber | null;
 
   const _subscribers: Set<Subscriber<Store>> = new Set();

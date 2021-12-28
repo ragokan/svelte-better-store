@@ -1,3 +1,10 @@
-export { $Writable, $writable } from "./bin/writable";
-export { $Store, SetStore, Setter, SubscribeStore, UpdateStore, $store } from "./bin/store";
+export { BetterWritable, betterWritable } from "./bin/writable";
+export {
+  BetterStore,
+  SetStore,
+  Setter,
+  SubscribeStore,
+  UpdateStore,
+  betterStore,
+} from "./bin/store";
 export { produce } from "./bin/produce";

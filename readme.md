@@ -14,25 +14,25 @@
 ### Migration from @svelte/store
 
 - For non-object values, just add change the name to better$1, for example
-  writable -> $writable
-- For object values, [read $store](#$store)
+  writable -> betterWritable
+- For object values, [read betterStore](#betterStore)
 
 ### Contents
 
-- [$store](#$store)
-- [$writable](#$writable)
+- [betterStore](#betterStore)
+- [betterWritable](#betterWritable)
 
 &nbsp;
 
-### $store
+### betterStore
 
-#### Best when you have an Object, else [check $writable](#$writable)
+#### Best when you have an Object, else [check betterWritable](#betterWritable)
 
 #### It has a great **update** method which replaces {...store, age: 25} with {age: 25} only!
 
 ```ts
 // create
-const personStore = $store({ name: "better", age: 23 });
+const personStore = betterStore({ name: "better", age: 23 });
 
 // set
 personStore.set({ name: "better", age: 24 });
@@ -61,13 +61,13 @@ person.update({ age: undefined }); // { name: "better" } - but you better use se
 
 &nbsp;
 
-### $writable
+### betterWritable
 
 #### **writable** with more features!
 
 ```ts
 // create
-const counter = $writable(0);
+const counter = betterWritable(0);
 
 // get
 console.log(counter.get()); // 0
@@ -84,10 +84,10 @@ counter.subscribe((value) => console.log(value));
 
 #### Produce - Mutate **store**
 
-If you are using **$store** or you have a list in **$writable**, you can use **produce** to mutate them. Usage is fairly simple;
+If you are using **betterStore** or you have a list in **betterWritable**, you can use **produce** to mutate them. Usage is fairly simple;
 
 ```ts
-const appStore = $store({ count: 0, items: [] });
+const appStore = betterStore({ count: 0, items: [] });
 
 appStore.update(
   produce((store) => {

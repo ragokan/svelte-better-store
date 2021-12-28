@@ -1,12 +1,15 @@
 import { noop, safe_not_equal } from "svelte/internal";
 import type { Subscriber, Unsubscriber, Updater } from "svelte/store";
-import type { $Base, Setter, SubscribeStore } from "./store";
+import type { BetterBase, Setter, SubscribeStore } from "./store";
 
-export interface $Writable<Value> extends $Base<Value> {
+export interface BetterWritable<Value> extends BetterBase<Value> {
   update(update: Updater<Value>): void;
 }
 
-export const $writable = <Value>(value: Value, setter: Setter<Value> = noop): $Writable<Value> => {
+export const betterWritable = <Value>(
+  value: Value,
+  setter: Setter<Value> = noop
+): BetterWritable<Value> => {
   let _stop: Unsubscriber | null;
 
   const _subscribers: Set<Subscriber<Value>> = new Set();
