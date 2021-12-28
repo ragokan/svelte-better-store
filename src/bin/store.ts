@@ -1,29 +1,27 @@
 import { noop } from "svelte/internal";
-import type { Subscriber, Unsubscriber } from "svelte/store";
-import type { BetterFiltered } from "./filtered";
-import { betterFiltered } from "./filtered";
-import type { BetterReadable } from "./readable";
+import type { Subscriber, Unsubscriber, Writable } from "svelte/store";
 
+export interface $Base<T> extends Writable<T> {
+  get: GetStore<T>;
+  set: SetStore<T>;
+}
+
+export type GetStore<T> = () => T;
 export type SetStore<Store> = (newStore: Store) => void;
 export type FullUpdate<Store> = Partial<Store> | ((state: Store) => Partial<Store>);
+export type Setter<Store> = (set: SetStore<Store>) => Unsubscriber | void;
 export interface UpdateStore<Store> {
   <Setter extends keyof Store>(key: Setter, update: (value: Store[Setter]) => Store[Setter]): void;
   (update: FullUpdate<Store>): void;
 }
-export type Setter<Store> = (set: SetStore<Store>) => Unsubscriber | void;
 export type SubscribeStore<Store> = (sub: Subscriber<Store>) => Unsubscriber;
-export type FilterStore<Store> = <Slice>(slice: (store: Store) => Slice) => BetterFiltered<Slice>;
 
-export interface BetterStore<Store> extends BetterReadable<Store> {
-  set: SetStore<Store>;
+export interface $Store<Store> extends $Base<Store> {
   update: UpdateStore<Store>;
   subscribe: SubscribeStore<Store>;
 }
 
-export const betterStore = <Store>(
-  store: Store,
-  setter: Setter<Store> = noop
-): BetterStore<Store> => {
+export const $store = <Store>(store: Store, setter: Setter<Store> = noop): $Store<Store> => {
   let _stop: Unsubscriber | null;
 
   const _subscribers: Set<Subscriber<Store>> = new Set();
@@ -41,10 +39,9 @@ export const betterStore = <Store>(
   };
 
   const set = (newStore: Store): void => {
-    if (newStore !== store) {
-      store = newStore;
-      _notify();
-    }
+    // No need to call safe_not_equal like writable, since they will always be not equal (both of parameters are object).
+    store = newStore;
+    _notify();
   };
 
   const update: UpdateStore<Store> = <Setter extends keyof Store = any>(...args: any[]) => {
@@ -72,9 +69,5 @@ export const betterStore = <Store>(
     };
   };
 
-  const filter: FilterStore<Store> = <Slice>(
-    slice: (store: Store) => Slice
-  ): BetterFiltered<Slice> => betterFiltered(subscribe, get, slice);
-
-  return { get, set, update, subscribe, filter };
+  return { get, set, update, subscribe };
 };

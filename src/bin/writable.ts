@@ -1,18 +1,12 @@
-import { noop } from "svelte/internal";
+import { noop, safe_not_equal } from "svelte/internal";
 import type { Subscriber, Unsubscriber, Updater } from "svelte/store";
-import { BetterBase, betterFiltered, BetterFiltered, FilterStore } from "..";
-import type { Setter, SubscribeStore } from "./store";
+import type { $Base, Setter, SubscribeStore } from "./store";
 
-export interface BetterWritable<Value> extends BetterBase<Value> {
-  set(value: Value): void;
+export interface $Writable<Value> extends $Base<Value> {
   update(update: Updater<Value>): void;
-  filter: FilterStore<Value>;
 }
 
-export const betterWritable = <Value>(
-  value: Value,
-  setter: Setter<Value> = noop
-): BetterWritable<Value> => {
+export const $writable = <Value>(value: Value, setter: Setter<Value> = noop): $Writable<Value> => {
   let _stop: Unsubscriber | null;
 
   const _subscribers: Set<Subscriber<Value>> = new Set();
@@ -30,7 +24,7 @@ export const betterWritable = <Value>(
   };
 
   const set = (newValue: Value): void => {
-    if (newValue !== value) {
+    if (safe_not_equal(value, newValue)) {
       value = newValue;
       _notify();
     }
@@ -53,9 +47,5 @@ export const betterWritable = <Value>(
     };
   };
 
-  const filter: FilterStore<Value> = <Slice>(
-    slice: (store: Value) => Slice
-  ): BetterFiltered<Slice> => betterFiltered(subscribe, get, slice);
-
-  return { get, set, update, subscribe, filter };
+  return { get, set, update, subscribe };
 };
